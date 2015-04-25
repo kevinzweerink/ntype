@@ -23,5 +23,6 @@ var share = document.querySelector('#share-message');
 
 share.addEventListener('click', function(e) {
 	e.preventDefault();
+	window.location.hash = ntype.bundleSettings();
 	generateShortUrl('#' + ntype.bundleSettings());
 })
