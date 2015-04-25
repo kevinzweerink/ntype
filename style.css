@@ -67,6 +67,10 @@ a {
 	color: inherit;
 }
 
+a.ext_link {
+	text-decoration: underline;
+}
+
 .block {
 	display: block;
 	padding: 1.5rem;
@@ -76,17 +80,7 @@ a {
 }
 
 .block--bottom {
-	position: absolute;
-	bottom: 0;
-	border-top: 2px solid;
-	border-bottom: 0;
-}
-
-.block--bottom::after {
-	content: '\2192';
-	float: right;
-	font-size: 1rem;
-	margin-top: -.2rem;
+	border: none;
 }
 
 .block--nopad {

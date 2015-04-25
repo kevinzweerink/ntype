@@ -619,7 +619,7 @@ NType.prototype.utils.normalizeLetterSet = function(set) {
 	NType.prototype.utils.normalizeLetterSet(window.TYPE);
 
 	var ntype = new NType(window);
-	ntype.addString('FLATLAND');
+	ntype.addString('NTYPE');
 	// ntype.importSettings(parseJSON(window.location.hash));
 	ntype.begin();
 
