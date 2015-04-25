@@ -208,6 +208,7 @@ var NType = function(el) {
 	}
 
 	this.addLetter = function(letter) {
+		console.log(letter);
 		this.addShape(window.TYPE[letter]);
 		this.string += letter;
 	}
@@ -710,9 +711,9 @@ window.addEventListener('keydown', function(e) {
 
 window.addEventListener('keyup', function(e) {
 	var key = String.fromCharCode(e.keyCode);
+
 	if (window.TYPE[key] && window.TYPE[key].length > 0) {
-		var letter = window.TYPE[key];
-		ntype.addShape(letter);
+		ntype.addLetter(key);
 	}
 
 	if (e.keyCode == 32) {
