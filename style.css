@@ -6,6 +6,8 @@
 
 body {
 	overflow: hidden;
+	font-family: 'Office Code Pro';
+	color: #0000FF;
 }
 
 #controls, #controls-toggle {
@@ -254,4 +256,17 @@ input[type=range]::-moz-range-thumb {
 	bottom: 1rem;
 	right: 1rem;
 	cursor: pointer;
+}
+
+#share-message {
+	font-size: .75rem;
+	display: inline-block;
+	padding: .5rem;
+	border: 2px solid;
+	border-radius: 4px;
+	text-transform: uppercase;
+	position: fixed;
+	bottom: 1rem;
+	left: 1rem;
+
 }

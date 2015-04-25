@@ -569,14 +569,91 @@ NType.prototype.bundleSettings = function() {
 	var settings = {};
 	settings.speed = this.speed;
 	settings.rotationPlanes = this.rotationPlanes;
+	settings.fpr = this.fpr;
+	settings.string = this.string;
+	settings.drawForms = this.drawForms;
+	settings.drawTrails = this.drawTrails;
 
+	var string = "";
+
+	for (var key in settings) {
+		string += key;
+		string += '=';
+		string += settings[key];
+		string += '&';
+	}
+
+	string = string.substr(0, string.length - 1);
+
+	return string;
 }
 
-NType.prototype.importSettings = function(settings) {
-	this.setSpeed(settings.speed);
-	this.rotationPlanes = settings.rotationPlanes;
-	this.setMatrix(this.rotationPlanes);
-	this.addString(settings.string);
+NType.prototype.parseUrl = function() {
+	var hash = window.location.hash.substr(1),
+			settings,
+			params;
+
+	if (!hash.length || hash.length < 1) {
+		return false;
+	}
+
+	params = hash.split('&');
+	settings = params.reduce(function(settings, p) {
+		var param = p.split('=')
+		settings[param[0]] = param[1];
+
+		return settings;
+	}, {});
+
+	if (settings.rotationPlanes) {
+		settings.rotationPlanes = settings.rotationPlanes.split(',');
+	}
+
+	if (settings.drawTrails) {
+		settings.drawTrails = (settings.drawTrails === 'true');
+	}
+
+	if (settings.drawForms) {
+		settings.drawForms = (settings.drawForms === 'true');
+	}
+
+	return settings;
+}
+
+NType.prototype.importSettings = function() {
+	var settings = this.parseUrl();
+
+	window.defaults = settings;
+	var defaultsLoaded = new Event('defaultsLoaded');
+	window.dispatchEvent(defaultsLoaded);
+
+	if (!settings)
+		return false;
+
+	if (settings.speed)
+		this.setSpeed(parseFloat(settings.speed));
+
+	if (settings.fpr)
+		this.setFpr(parseFloat(settings.fpr));
+
+	if (settings.drawForms != undefined) {
+		this.setDrawForms(settings.drawForms);
+	}
+
+	if (settings.drawTrails != undefined)
+		this.setDrawTrails(settings.drawTrails);
+
+
+	if (settings.rotationPlanes) {
+		this.rotationPlanes = settings.rotationPlanes;
+		this.setMatrix(this.rotationPlanes);
+	}
+	
+	if (settings.string) {
+		this.addString(settings.string);
+	}
+
+	return true;
 }
 
 NType.prototype.utils.normalizeLetterSet = function(set) {
@@ -616,12 +693,14 @@ NType.prototype.utils.normalizeLetterSet = function(set) {
 	}
 }
 
-	NType.prototype.utils.normalizeLetterSet(window.TYPE);
+NType.prototype.utils.normalizeLetterSet(window.TYPE);
 
-	var ntype = new NType(window);
+var ntype = new NType(window);
+
+if ( !ntype.importSettings() )
 	ntype.addString('NTYPE');
-	// ntype.importSettings(parseJSON(window.location.hash));
-	ntype.begin();
+
+ntype.begin();
 
 window.addEventListener('keydown', function(e) {
 	if (e.keyCode == 8) {

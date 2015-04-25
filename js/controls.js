@@ -11,7 +11,6 @@ var reset = document.querySelector('.button--reset');
 var forms = document.querySelector('#forms');
 var trails = document.querySelector('#trails');
 var fpr = document.querySelector('#fpr');
-// var share = document.querySelector('#share');
 
 var speedCache = 0;
 
@@ -117,4 +116,40 @@ window.addEventListener('MozMousePixelScroll', function(e) {
 		ntype.updateLines();
 		ntype.updateTrails();
 	}
-})
+});
+
+window.addEventListener('defaultsLoaded', function(e) {
+	var settings = window.defaults;
+	console.log('hello');
+
+	if (settings.rotationPlanes) {
+
+		planeSelectors.forEach(function(ps) {
+			ps.checked = false;
+		});
+
+		settings.rotationPlanes.forEach(function(plane) {
+			planeSelectors.forEach(function(ps) {
+				if (plane == ps.getAttribute('id')) {
+					ps.checked = true;
+				}
+			});
+		});
+	}
+
+	if (settings.speed) {
+		speed.value = settings.speed;
+	}
+
+	if (settings.fpr) {
+		fpr.value = settings.fpr;
+	}
+
+	if (settings.drawTrails != undefined) {
+		trails.checked = settings.drawTrails;
+	}
+
+	if (settings.drawForms != undefined) {
+		forms.checked = settings.drawForms;
+	}
+});
