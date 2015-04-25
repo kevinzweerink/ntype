@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>NType</title>
+	<link rel="stylesheet" href="reset.css">
+	<link href='style.css' rel='stylesheet'>
+	<meta charset='UTF-8'>
+</head>
+<body>
+
+<div id='controls'>
+
+	<div class="block block--title">
+		<h1>NTYPE &mdash; 4D Type Extruder</h1>
+	</div>
+
+	<!-- <a class='block' href='#' id='share'>
+		Share
+	</a> -->
+
+	<div class="block block--nopad">
+		<div class="button button--play pressed"></div>
+		<div class="button button--pause"></div>
+		<div class="button button--reset"></div>
+	</div>
+
+	<div class="block">
+		<h2>Rotation Planes</h2>
+
+		<ul class='list-col'>
+			<li><input type='checkbox' class='plane-selector' id='xw'><label for='xw'>XW</label></li>
+			<li><input type='checkbox' class='plane-selector' id='yw'><label for='yw'>YW</label></li>
+			<li><input type='checkbox' class='plane-selector' id='zw' checked><label for='zw'>ZW</label></li>
+		</ul>
+
+		<ul class='list-col'>
+			<li><input type='checkbox' class='plane-selector' id='xy'><label for='xy'>XY</label></li>
+			<li><input type='checkbox' class='plane-selector' id='xz'><label for='xz'>XZ</label></li>
+			<li><input type='checkbox' class='plane-selector' id='yz' checked><label for='yz'>YZ</label></li>
+		</ul>
+	</div>
+
+	<div class="block">
+		<h2>Rotation Speed</h2>
+
+		<input type='range' min='0.001' max='0.1' step='0.001' value='0.0157' id='speed'>
+		<span class='min-label'>Slow</span>
+		<span class='max-label'>Fast</span>
+	</div>
+
+	<div class="block">
+		<h2>Trail Length</h2>
+
+		<input type='range' min='2' max='300' step='1' value='100' id='fpr'>
+		<span class='min-label'>2</span>
+		<span class='max-label'>300</span>
+	</div>
+
+	<div class="block">
+		<h2>Drawing Options</h2>
+
+		<div class='form-field'><input type='checkbox' id='forms' checked><label for='forms'>Forms</label></div>
+		<div class='form-field'><input type='checkbox' id='trails'><label for='trails'>Trails</label></div>
+	</div>
+
+</div>
+
+<div id='controls-toggle'>
+	<img src='assets/controls-icon.svg'>
+</div>
+<script type='text/javascript' src='js/three.min.js'></script>
+<script type='text/javascript' src='js/three.trackball.js'></script>
+<script type='text/javascript' src='js/type.js'></script>
+<script type='text/javascript' src='js/main.js'></script>
+<script type='text/javascript' src='js/share.js'></script>
+<script type="text/javascript" src='js/controls.js'></script>
+</body>
+</html>
