@@ -245,7 +245,6 @@ var NType = function(el) {
 	}
 
 	this.addLetter = function(letter) {
-		console.log(letter);
 		this.addShape(window.TYPE[letter]);
 		this.string += letter;
 	}

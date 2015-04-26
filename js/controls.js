@@ -1,3 +1,4 @@
+
 NodeList.prototype.forEach = Array.prototype.forEach;
 NodeList.prototype.reduce = Array.prototype.reduce;
 
@@ -120,7 +121,6 @@ window.addEventListener('MozMousePixelScroll', function(e) {
 
 window.addEventListener('defaultsLoaded', function(e) {
 	var settings = window.defaults;
-	console.log('hello');
 
 	if (settings.rotationPlanes) {
 
