@@ -4,6 +4,12 @@
   			url('fonts/WOFF/OfficeCodePro-Bold.woff') format('woff');       
 }
 
+@font-face {
+  font-family: 'Office Code Pro Regular';
+  src:  url('fonts/WOFF2/OfficeCodePro-Regular.woff2') format('woff2'),
+  			url('fonts/WOFF/OfficeCodePro-Regular.woff') format('woff');       
+}
+
 body {
 	overflow: hidden;
 	font-family: 'Office Code Pro';
@@ -12,6 +18,66 @@ body {
 
 #controls, #controls-toggle {
 	z-index: 10000;
+}
+
+#info-toggle {
+	-webkit-transition: -webkit-transform .15s ease;
+	transition: transform .15s ease;
+	position: fixed;
+	bottom: 1rem;
+	right: 5rem;
+	cursor: pointer;
+}
+
+#info-overlay {
+	-webkit-transform: translate(-50%, 0);
+	transform: translate(-50%, 0);
+
+	-webkit-transition: -webkit-transform .35s cubic-bezier(.44,0,.35,1.28), bottom .35s cubic-bezier(.44,0,.35,1.28);
+	transition: transform .35s cubic-bezier(.44,0,.35,1.28), bottom .35s cubic-bezier(.44,0,.35,1.28);
+
+	font-family: 'Office Code Pro Regular';
+	position: fixed;
+	width: 500px;
+	bottom: -100vh;
+	left: 50%;
+	border: 2px solid;
+	background: #FFF;
+}
+
+.info-section__info, .info-section__controls {
+	padding: 1.5rem;
+}
+
+#info-toggle:hover ~ #info-overlay {
+	-webkit-transform: translate(-50%, 50%);
+	transform: translate(-50%, 50%);
+
+	bottom: 50vh;
+}
+
+.info-heading {
+	font-family: 'Office Code Pro';
+}
+
+.controls-list__heading {
+	font-family: 'Office Code Pro';
+	margin-bottom: 1rem;
+}
+
+.controls-list__list-item {
+	margin-top: .5rem;
+}
+
+.controls-list__item-heading {
+	font-family: 'Office Code Pro';
+}
+
+.full-width-rule {
+	border: none;
+	border-top: 2px solid;
+	margin: 0;
+
 }
 
 #controls-toggle {
@@ -23,6 +89,11 @@ body {
 }
 
 #controls-toggle.open {
+	-webkit-transform: translate(-250px, 0);
+	transform: translate(-250px,0);
+}
+
+#controls-toggle.open ~ #info-toggle {
 	-webkit-transform: translate(-250px, 0);
 	transform: translate(-250px,0);
 }
