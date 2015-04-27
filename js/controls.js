@@ -94,11 +94,6 @@ trails.addEventListener('change', function(e) {
 	ntype.setDrawTrails(this.checked);
 });
 
-// share.addEventListener('click', function(e) {
-// 	e.preventDefault();
-// 	generateShortUrl();
-// });
-
 window.addEventListener('mousewheel', function(e) {
 	if (window.PAUSED) {
 		ntype._scrollMatrices.update(e.wheelDeltaY/5000);

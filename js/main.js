@@ -21,6 +21,7 @@ window.addEventListener('keyup', function(e) {
 	}
 
 	if (e.keyCode == 32) {
+		e.preventDefault();
 		window.PAUSED = !window.PAUSED;
 		setPaused(window.PAUSED);
 	}
