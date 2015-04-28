@@ -55,6 +55,7 @@ function exportOTF(matrix) {
 	ntype.clear();
 	ntype.addString(stringCache);
 	ntype.rotate(matrix);
+	ntype.trailsNeedReset = true;
 	ntype.updateTrails();
 	ntype.updateLines();
 
