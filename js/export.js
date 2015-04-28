@@ -58,7 +58,7 @@ function exportOTF(matrix) {
 	ntype.updateTrails();
 	ntype.updateLines();
 
-	var Font = new opentype.Font({familyName : 'NType', styleName : 'Rotation ' + matrix.determinant(), 'unitsPerEm' : 200, glyphs : glyphs});
+	var Font = new opentype.Font({familyName : 'NType', styleName : 'Rotation-' + matrix.determinant(), 'unitsPerEm' : 200, glyphs : glyphs});
 	Font.download();
 }
 
