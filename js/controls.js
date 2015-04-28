@@ -20,9 +20,8 @@ function gatherPlanes() {
 		function(planes, ps) {
 			if (ps.checked)
 				planes.push(ps.getAttribute('id'));
-
 			return planes;
-		}, [])
+		}, []).sort()
 	)
 }
 
@@ -97,6 +96,7 @@ trails.addEventListener('change', function(e) {
 window.addEventListener('mousewheel', function(e) {
 	if (window.PAUSED) {
 		ntype._scrollMatrices.update(e.wheelDeltaY/5000);
+		ntype.scrollSpeed = e.wheelDeltaY/5000;
 		gatherPlanes();
 
 		ntype.rotate(ntype.scrollMatrix);

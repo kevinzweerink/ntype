@@ -45,7 +45,7 @@ body {
 	background: #FFF;
 }
 
-.info-section__info, .info-section__controls {
+.info-section__info, .info-section__controls, .info-section__actions {
 	padding: 1.5rem;
 }
 
@@ -60,16 +60,17 @@ body {
 	font-family: 'Office Code Pro';
 }
 
-.controls-list__heading {
+.controls-list__heading, .actions-list__heading {
 	font-family: 'Office Code Pro';
 	margin-bottom: 1rem;
 }
 
-.controls-list__list-item {
+.controls-list__list-item, .actions-list__list-item {
 	margin-top: .5rem;
+	line-height: 1.4;
 }
 
-.controls-list__item-heading {
+.controls-list__item-heading, .actions-list__item-heading {
 	font-family: 'Office Code Pro';
 }
 
@@ -329,6 +330,12 @@ input[type=range]::-moz-range-thumb {
 	cursor: pointer;
 }
 
+.actions {
+	position: fixed;
+	bottom: 1rem;
+	left: 1rem;
+}
+
 #share-message {
 	font-size: .75rem;
 	display: inline-block;
@@ -336,8 +343,21 @@ input[type=range]::-moz-range-thumb {
 	border: 2px solid;
 	border-radius: 4px;
 	text-transform: uppercase;
-	position: fixed;
-	bottom: 1rem;
-	left: 1rem;
+}
 
+#download {
+	font-size: .75rem;
+	display: inline-block;
+	padding: .5rem;
+	border: 2px solid;
+	border-radius: 4px;
+	text-transform: uppercase;
+	margin-left: .5rem;
+}
+
+#download img {
+	display: block;
+	float: left;
+	width: .75rem;
+	margin-right: .5rem;
 }

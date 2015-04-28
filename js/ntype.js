@@ -9,6 +9,19 @@ var SimpleDimensionalObject = function() {
 	this.lines = [];
 	this.projection = [];
 	this.trails = [];
+
+	this.get2DProjection = function(camera) {
+		return this.lines.map(function(line) {
+			var points = line.geometry.vertices;
+			return points.map(function(point) {
+				var p2d = new THREE.Vector3().copy(point).project(camera);
+				p2d.setX(ntype.w * p2d.x);
+				p2d.setY(ntype.h * p2d.y);
+
+				return p2d;
+			});
+		});
+	}
 }
 
 var NType = function(el) {
@@ -46,7 +59,14 @@ var NType = function(el) {
 	// rotationState = number of radians rotated from origin
 	// rotationPlanes = array of strings representing the planes to be rotated
 	// on. Note that the order of the letters is important
-	this.rotationState = 0;
+	this.rotationState = {
+		xw : 0,
+		xy : 0,
+		xz : 0,
+		yw : 0,
+		yz : 0,
+		zw : 0
+	}
 	this.rotationPlanes = [];
 
 	// Defaults
@@ -63,6 +83,8 @@ var NType = function(el) {
 	// The matrix that will be updated on scroll with the mousewheel
 	// deltaY property
 	this.scrollMatrix = new THREE.Matrix4();
+
+	this.accumulationMatrix = new THREE.Matrix4();
 
 	// Set basic THREE.js rendering things, set matrix, etc
 	this.setup = function() {
@@ -214,10 +236,10 @@ var NType = function(el) {
 		var extrusion = this.utils.extrude4(vertices);
 		var vertices = extrusion.vertices.map(function(v) {
 			var vect = new THREE.Vector4(
-				v[0] - .5,
-				v[1] - .5,
-				v[2] - .5,
-				v[3] - .5
+				v[0],
+				v[1],
+				v[2],
+				v[3]
 			);
 
 			return vect;
@@ -298,14 +320,21 @@ var NType = function(el) {
 	// If matrix is passed in, uses that matrix
 	// if no matrix, uses this.matrix
 	this.rotate = function(matrix) {
-		var that = this;
+		var that = this,
+				_matrix = matrix ? matrix : that.matrix;
 
-		this.rotationState += this.speed;
+		for (var plane in this.rotationState) {
+			if (this.rotationPlanes.indexOf(plane) > -1)
+				this.rotationState[plane] += matrix ? this.scrollSpeed : this.speed;
+		}
+
 		this.shapes.forEach(function(s) {
 			s.vertices.forEach(function(v) {
-				v.applyMatrix4(matrix || that.matrix)
+				v.applyMatrix4(_matrix)
 			});
 		});
+
+		this.accumulationMatrix.multiply(_matrix);
 
 		this.project();
 	}
@@ -377,10 +406,27 @@ var NType = function(el) {
 			});
 		});
 
+		this.accumulationMatrix = new THREE.Matrix4();
+
+		this.rotationState = {
+			xw : 0,
+			xy : 0,
+			xz : 0,
+			yw : 0,
+			yz : 0,
+			zw : 0
+		}
+
 		this.trailsNeedReset = true;
 		this.project();
 		this.updateLines();
 		this.updateTrails();
+	}
+
+	this.clear = function() {
+		while (this.string.length > 0) {
+			this.backspace();
+		}
 	}
 
 
@@ -452,12 +498,12 @@ NType.prototype.utils = {
 		var extruded = new SimpleDimensionalObject(),
 				verts0 = vertices.map(function(v) {
 					var vertex = v.slice(0);
-					vertex.push(0)
+					vertex.push(-.5)
 					return vertex;
 				}),
 				verts1 = vertices.map(function(v) {
 					var vertex = v.slice(0);
-					vertex.push(1)
+					vertex.push(.5)
 					return vertex;
 				}),
 				combinedVertices = verts0.concat(verts1),
@@ -482,11 +528,11 @@ NType.prototype.utils = {
 				extruded = new SimpleDimensionalObject();
 
 		extrusion0.vertices.forEach(function(v) {
-			v.push(0);
+			v.push(-.5);
 		});
 
 		extrusion1.vertices.forEach(function(v) {
-			v.push(1);
+			v.push(.5);
 		});
 
 		extrusion1.joins.forEach(function(v) {
@@ -511,49 +557,62 @@ NType.prototype._scrollMatrices = {
 	xy : new THREE.Matrix4(),
 	yz : new THREE.Matrix4(),
 	xz : new THREE.Matrix4(),
-	update : function(t) {
-
-		this.xy.set(
- cos(t), sin(t),      0,      0,
--sin(t), cos(t),      0,      0,
-			0,      0,      1,			0,
-			0,      0,  		0,			1
-		);
-
-		this.yz.set(
-			1,      0,      0,      0,
-			0, cos(t), sin(t),      0,
-			0,-sin(t), cos(t),			0,
-			0,      0,  		0,  		1
-		);
-
-		this.xz.set(
- cos(t), 			0,-sin(t),      0,
-			0, 			1,      0,      0,
- sin(t),      0, cos(t),			0,
-			0,      0,  		0,			1	
-		)
-
+	setzw : function(t) {
 		this.zw.set(
 			1,      0,      0,      0,
 			0,      1,      0,      0,
 			0,      0,  cos(t),-sin(t),
 			0,      0,  sin(t),  cos(t)
 		);
-
-		this.xw.set(
-		 cos(t),      0,      0, sin(t),
-					0,      1,      0,      0,
-					0,      0,      1,      0,
-		-sin(t),      0,      0,  cos(t)
-		);
-
+	},
+	setyw : function(t) {
 		this.yw.set(
 	      1,      0,      0,      0,
 				0, cos(t),      0,-sin(t),
 				0,      0,      1,      0,
 				0, sin(t),      0,  cos(t)
 		)
+	},
+	setxw : function(t) {
+		this.xw.set(
+		 cos(t),      0,      0, sin(t),
+					0,      1,      0,      0,
+					0,      0,      1,      0,
+		-sin(t),      0,      0,  cos(t)
+		);
+	},
+	setxy : function(t) {
+		this.xy.set(
+ cos(t), sin(t),      0,      0,
+-sin(t), cos(t),      0,      0,
+			0,      0,      1,			0,
+			0,      0,  		0,			1
+		);
+	},
+	setyz : function(t) {
+		this.yz.set(
+			1,      0,      0,      0,
+			0, cos(t), sin(t),      0,
+			0,-sin(t), cos(t),			0,
+			0,      0,  		0,  		1
+		);
+	},
+	setxz : function(t) {
+		this.xz.set(
+ cos(t), 			0,-sin(t),      0,
+			0, 			1,      0,      0,
+ sin(t),      0, cos(t),			0,
+			0,      0,  		0,			1	
+		);
+	},
+
+	update : function(t) {
+		this.setxw(t);
+		this.setxy(t);
+		this.setxz(t);
+		this.setyw(t);
+		this.setyz(t);
+		this.setzw(t);
 	}
 }
 
@@ -564,49 +623,62 @@ NType.prototype._matrices = {
 	xy : new THREE.Matrix4(),
 	yz : new THREE.Matrix4(),
 	xz : new THREE.Matrix4(),
-	update : function(t) {
-
-		this.xy.set(
- cos(t), sin(t),      0,      0,
--sin(t), cos(t),      0,      0,
-			0,      0,      1,			0,
-			0,      0,  		0,			1
-		);
-
-		this.yz.set(
-			1,      0,      0,      0,
-			0, cos(t), sin(t),      0,
-			0,-sin(t), cos(t),			0,
-			0,      0,  		0,  		1
-		);
-
-		this.xz.set(
- cos(t), 			0,-sin(t),      0,
-			0, 			1,      0,      0,
- sin(t),      0, cos(t),			0,
-			0,      0,  		0,			1	
-		)
-
+	setzw : function(t) {
 		this.zw.set(
 			1,      0,      0,      0,
 			0,      1,      0,      0,
 			0,      0,  cos(t),-sin(t),
 			0,      0,  sin(t),  cos(t)
 		);
-
-		this.xw.set(
-		 cos(t),      0,      0, sin(t),
-					0,      1,      0,      0,
-					0,      0,      1,      0,
-		-sin(t),      0,      0,  cos(t)
-		);
-
+	},
+	setyw : function(t) {
 		this.yw.set(
 	      1,      0,      0,      0,
 				0, cos(t),      0,-sin(t),
 				0,      0,      1,      0,
 				0, sin(t),      0,  cos(t)
 		)
+	},
+	setxw : function(t) {
+		this.xw.set(
+		 cos(t),      0,      0, sin(t),
+					0,      1,      0,      0,
+					0,      0,      1,      0,
+		-sin(t),      0,      0,  cos(t)
+		);
+	},
+	setxy : function(t) {
+		this.xy.set(
+ cos(t), sin(t),      0,      0,
+-sin(t), cos(t),      0,      0,
+			0,      0,      1,			0,
+			0,      0,  		0,			1
+		);
+	},
+	setyz : function(t) {
+		this.yz.set(
+			1,      0,      0,      0,
+			0, cos(t), sin(t),      0,
+			0,-sin(t), cos(t),			0,
+			0,      0,  		0,  		1
+		);
+	},
+	setxz : function(t) {
+		this.xz.set(
+ cos(t), 			0,-sin(t),      0,
+			0, 			1,      0,      0,
+ sin(t),      0, cos(t),			0,
+			0,      0,  		0,			1	
+		);
+	},
+
+	update : function(t) {
+		this.setxw(t);
+		this.setxy(t);
+		this.setxz(t);
+		this.setyw(t);
+		this.setyz(t);
+		this.setzw(t);
 	}
 }
 
@@ -741,6 +813,21 @@ NType.prototype.utils.normalizeLetterSet = function(set) {
 		letter.forEach(function(vertex) {
 			vertex[0] /= max;
 			vertex[1] /= max;
+		});
+
+		var size = letter.reduce(function(size, vertex) {
+			if (vertex[0] > size.x)
+				size.x = vertex[0];
+
+			if (vertex[1] > size.y)
+				size.y = vertex[1];
+
+			return size		
+		}, {x : 0, y : 0});
+
+		letter.forEach(function(vertex) {
+			vertex[0] -= size.x/2;
+			vertex[1] -= size.y/2;
 		});
 	}
 }

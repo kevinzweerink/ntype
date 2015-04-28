@@ -71,7 +71,12 @@
 
 </div>
 
-<a id='share-message' href='#'>Share Message</a>
+<div class='actions'>
+
+	<a id='share-message' href='#'>Share Message</a>
+	<a id='download' href='#'><img src='assets/dload-icon.svg'>Download Rotation As OTF</a>
+
+</div>
 
 <div id='controls-toggle'>
 	<img src='assets/controls-icon.svg'>
@@ -112,6 +117,21 @@
 			</li>
 		</ul>
 	</div>
+
+	<hr class='full-width-rule'>
+
+	<div class='info-section__actions'>
+		<h2 class="info-heading">Actions</h2>
+		<ul class='actions-list'>
+			<li class='actions-list__list-item'>
+				<span class='actions-list__item-heading'>Share Message</span>
+				Get a URL to share the current text and rotation parameters 
+			</li>
+			<li class='actions-list__list-item'>
+				<span class='actions-list__item-heading'>Download OTF</span>
+				Download an OTF of (maybe) the current rotation. This part doesn't work great yet.
+			</li>
+	</div>
 </div>
 
 <script type='text/javascript' src='js/three.min.js'></script>
@@ -131,5 +151,8 @@
   ga('send', 'pageview');
 
 </script>
+
+<script type='text/javascript' src='js/opentype.min.js'></script>
+<script type='text/javascript' src='js/export.js'></script>
 </body>
 </html>
