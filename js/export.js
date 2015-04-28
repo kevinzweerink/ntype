@@ -53,6 +53,7 @@ function exportOTF(matrix) {
 	}
 
 	ntype.clear();
+	ntype.reset();
 	ntype.addString(stringCache);
 	ntype.rotate(matrix);
 	ntype.trailsNeedReset = true;
