@@ -1,6 +1,6 @@
 # NType
 
-## 4D Type Extrusion
+__4D Type Extrusion__
 
 _[ntype.blue](http://ntype.blue "Ntype.Blue")_
 
