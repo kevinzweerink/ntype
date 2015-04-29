@@ -69,19 +69,19 @@ In `NType.js` there's a data structure called `SimpleDimensionalObject`. This ju
 
 To start out, the joins index should just be an array of vertex connections representing the outline of our shape. For example, a square would have the following vertices and joins:
 
-		var square = new SimpleDimensionalObject();
-		square.vertices = [
-			[0,1],
-			[1,1],
-			[1,0],
-			[0,0]
-		];
-		square.joins = [
-			[0,1],
-			[1,2],
-			[2,3],
-			[3,0]
-		];
+	var square = new SimpleDimensionalObject();
+	square.vertices = [
+		[0,1],
+		[1,1],
+		[1,0],
+		[0,0]
+	];
+	square.joins = [
+		[0,1],
+		[1,2],
+		[2,3],
+		[3,0]
+	];
 
 We can generate these joins pretty easily by looping through our vertices array and pushing `[i, i+1]` to the joins array with a special handler for the last item that pushes `[i, 0]` instead.
 
