@@ -147,6 +147,14 @@
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+ 	document.querySelector('#download').addEventListener('click', function(e) {
+ 		ga('send', 'event', 'OTF', 'Download', 'Downloaded OTF');
+ 	});
+
+ 	document.querySelector('#share-message').addEventListener('click', function(e){
+ 		ga('send','event','Share','Get Link','Requested share link from bitly')
+ 	})
+
   ga('create', 'UA-62268066-1', 'auto');
   ga('send', 'pageview');
 
