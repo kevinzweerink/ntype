@@ -95,8 +95,7 @@ trails.addEventListener('change', function(e) {
 
 window.addEventListener('mousewheel', function(e) {
 	if (window.PAUSED) {
-		ntype._scrollMatrices.update(e.wheelDeltaY/5000);
-		ntype.scrollSpeed = e.wheelDeltaY/5000;
+		ntype.setScrollSpeed(e.wheelDeltaY/5000)
 		gatherPlanes();
 
 		ntype.rotate(ntype.scrollMatrix);
@@ -107,7 +106,6 @@ window.addEventListener('mousewheel', function(e) {
 
 window.addEventListener('MozMousePixelScroll', function(e) {
 	if (window.PAUSED) {
-
 		ntype.rotate();
 		ntype.updateLines();
 		ntype.updateTrails();

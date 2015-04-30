@@ -56,17 +56,8 @@ var NType = function(el) {
 	this.string = "";
 
 	// Rotation variables
-	// rotationState = number of radians rotated from origin
 	// rotationPlanes = array of strings representing the planes to be rotated
 	// on. Note that the order of the letters is important
-	this.rotationState = {
-		xw : 0,
-		xy : 0,
-		xz : 0,
-		yw : 0,
-		yz : 0,
-		zw : 0
-	}
 	this.rotationPlanes = [];
 
 	// Defaults
@@ -132,6 +123,12 @@ var NType = function(el) {
 		// Technically redundant to call this
 		// since this.rotationPlanes is set within this.setMatrix, but
 		// it's necessary to update the matrix for the new speed
+		this.setMatrix(this.rotationPlanes);
+	}
+
+	this.setScrollSpeed = function(s) {
+		this.scrollSpeed = parseFloat(s);
+		this._scrollMatrices.update(this.scrollSpeed);
 		this.setMatrix(this.rotationPlanes);
 	}
 
@@ -323,11 +320,6 @@ var NType = function(el) {
 		var that = this,
 				_matrix = matrix ? matrix : that.matrix;
 
-		for (var plane in this.rotationState) {
-			if (this.rotationPlanes.indexOf(plane) > -1)
-				this.rotationState[plane] += matrix ? this.scrollSpeed : this.speed;
-		}
-
 		this.shapes.forEach(function(s) {
 			s.vertices.forEach(function(v) {
 				v.applyMatrix4(_matrix)
@@ -407,15 +399,6 @@ var NType = function(el) {
 		});
 
 		this.accumulationMatrix = new THREE.Matrix4();
-
-		this.rotationState = {
-			xw : 0,
-			xy : 0,
-			xz : 0,
-			yw : 0,
-			yz : 0,
-			zw : 0
-		}
 
 		this.trailsNeedReset = true;
 		this.project();
