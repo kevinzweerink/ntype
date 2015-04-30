@@ -38,20 +38,20 @@ NType uses two open-source libraries:
 
 NType starts with a set of 2D block letters which were designed specifically to maintain legibility through complex extrusion with the fewest number of vertices. These letters were originally drawn on 28x24 unit grid in Illustrator, and then their vertices were manually copied into the file [type.js](http://github.com/kevinzweerink/ntype/tree/master/js/type.js).
 
-		window.TYPE = {};
+	window.TYPE = {};
 
-		window.TYPE.A = [
-			[2,0],
-			[12,24],
-			[17,24],
-			[27,0],
-			[22,0],
-			[20,5],
-			[9,5],
-			[7,0]
-		]
+	window.TYPE.A = [
+		[2,0],
+		[12,24],
+		[17,24],
+		[27,0],
+		[22,0],
+		[20,5],
+		[9,5],
+		[7,0]
+	]
 
-		// ... etc.
+	// ... etc.
 
 #### Step 1. Normalize Letterforms
 
@@ -85,7 +85,7 @@ To start out, the joins index should just be an array of vertex connections repr
 
 We can generate these joins pretty easily by looping through our vertices array and pushing `[i, i+1]` to the joins array with a special handler for the last item that pushes `[i, 0]` instead.
 
-#### Step 2. Extrude to 3D
+#### Step 3. Extrude to 3D
 
 *In implementation, the extrusions are all handled by an instance of `NType`, which handles extrusion, rotation, and rendering, for documentation I'm just going to explain these steps irrespective to the specifics of their implementation*
 
@@ -97,7 +97,7 @@ Now we'll need to connect the original vertices to the cloned vertices. We know 
 
 This pattern should reliably take a set of 2D vertices and joins and return a set of 3D vertices and joins that represent a unit-length extrusion of the 2D form into 3D space.
 
-#### Step 3. Extrude to 4D
+#### Step 4. Extrude to 4D
 
 Surprisingly, once the mechanics for extruding to 3D have been established, extruding to 4D is a relatively simple proposition. The idea is the same: take a vertex set of `n` dimensions, copy it, add a new dimension (offsetting the copied set by 1 unit). To compute the joins, the idea is again the same: first copy the joins from the first set and add 1/2 of the (new, 4D) `vertices` array length to them, then make a new join between each vertex `i` in the original vertex set and its corresponding `i + vertices.length/2` vertex in the new set.
 
