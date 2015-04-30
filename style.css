@@ -49,7 +49,7 @@ body {
 	padding: 1.5rem;
 }
 
-#info-toggle:hover ~ #info-overlay {
+#info-overlay.open {
 	-webkit-transform: translate(-50%, 50%);
 	transform: translate(-50%, 50%);
 
@@ -81,6 +81,20 @@ body {
 
 }
 
+#info-overlay__close {
+	font-family: 'Office Code Pro';
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	line-height: 2rem;
+	font-size: 1rem;
+	border-radius: 50%;
+	border: 2px solid;
+	width: 2rem;
+	height: 2rem;
+	text-align: center;
+}
+ 
 #controls-toggle {
 	-webkit-transform: translate(0, 0);
 	transform: translate(0,0);
@@ -353,11 +367,4 @@ input[type=range]::-moz-range-thumb {
 	border-radius: 4px;
 	text-transform: uppercase;
 	margin-left: .5rem;
-}
-
-#download img {
-	display: block;
-	float: left;
-	width: .75rem;
-	margin-right: .5rem;
 }

@@ -12,6 +12,9 @@ var reset = document.querySelector('.button--reset');
 var forms = document.querySelector('#forms');
 var trails = document.querySelector('#trails');
 var fpr = document.querySelector('#fpr');
+var infoToggle = document.querySelector('#info-toggle');
+var closeInfo = document.querySelector("#info-overlay__close")
+var info = document.querySelector('#info-overlay')
 
 var speedCache = 0;
 
@@ -41,6 +44,20 @@ function setPaused(paused) {
 		pause.classList.remove('pressed');
 	}
 }
+
+function toggleInfo() {
+	info.classList.toggle('open');
+}
+
+infoToggle.addEventListener('click', function(e) {
+	e.preventDefault();
+	toggleInfo();
+});
+
+closeInfo.addEventListener('click', function(e) {
+	e.preventDefault();
+	toggleInfo();
+});
 
 controlsToggle.addEventListener('click', function(e) {
 	e.preventDefault();
