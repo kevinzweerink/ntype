@@ -210,7 +210,7 @@ Now we have a static drawing of a 3D projection of a 4D shape! We did it! Unfort
 
 ### Rotation
 
-This will just cover the mechanics of rotating the 4D vertices. Three.js actually makes this pretty easy with its `Matrix4` object. In NType, the set up is somewhat complicated because it needs to be able to dynamically generate rotation matrices as the user interacts with the controls, but the basis for that system is a set of six rotation matrices, each of which represents one of the six 4D rotation planes (xy,xz,yz,xw,yw,zw). I found these matrices (here, in an excellent article on four-space.)[http://steve.hollasch.net/thesis/chapter2.html]. Here's how to import those matrices into Three.js:
+This will just cover the mechanics of rotating the 4D vertices. Three.js actually makes this pretty easy with its `Matrix4` object. In NType, the set up is somewhat complicated because it needs to be able to dynamically generate rotation matrices as the user interacts with the controls, but the basis for that system is a set of six rotation matrices, each of which represents one of the six 4D rotation planes (xy,xz,yz,xw,yw,zw). I found these matrices [here, in an excellent article on four-space.](http://steve.hollasch.net/thesis/chapter2.html). Here's how to import those matrices into Three.js:
 
 	// t is just a rotation speed constant
 	var t = Math.PI/200
