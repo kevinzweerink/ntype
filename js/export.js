@@ -61,7 +61,29 @@ function exportOTF(matrix) {
 	ntype.updateLines();
 
 	var Font = new opentype.Font({familyName : 'NType', styleName : 'Rotation-' + matrix.determinant(), 'unitsPerEm' : 200, glyphs : glyphs});
-	Font.download();
+	try {
+		Font.download();
+	}
+
+	catch(err) {
+		
+		var req = new XMLHttpRequest();
+		var settings = '#' + ntype.bundleSettings();
+		var url =  'http://ntype.blue/' + encodeURIComponent(settings);
+		var endpoint = 'https://api-ssl.bitly.com/v3/shorten?access_token=d1bec5794ce59a96c31529a987dd0f507f23d62b&longUrl=' + url;
+	
+		req.open('GET', endpoint, true);
+
+		req.onload = function() {
+			if (req.status >= 200 && req.status < 400) {
+				var data = JSON.parse(req.responseText).data;
+				prompt("Looks like your browser doesn't support this feature yet. Open this URL in Chrome to restore the current settings.", data.url);
+	      return url;
+	    }
+		}
+
+		req.send();
+	}
 }
 
 document.querySelector('#download').addEventListener('click', function(e) {
