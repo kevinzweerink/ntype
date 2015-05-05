@@ -348,6 +348,7 @@ input[type=range]::-moz-range-thumb {
 	position: fixed;
 	bottom: 1rem;
 	left: 1rem;
+	width: 50%;
 }
 
 #share-message {
